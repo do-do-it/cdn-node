@@ -1,0 +1,15 @@
+{
+  "name": "cdn-node",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "repository": "git@github.com:do-do-it/cdn-node.git",
+  "author": "<zm@tuia.cn>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "handlebars": "^4.2.0",
+    "mime": "^2.4.4"
+  }
+}

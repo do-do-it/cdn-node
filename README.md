@@ -9,10 +9,10 @@ yarn install
 
 ### for development
 ```
-nodemon app.js
+nodemon src/app.js
 ```
 
 ### for production
 ```
-pm2 start app.js
+pm2 start src/app.js
 ```
