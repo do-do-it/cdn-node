@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "handlebars": "^4.2.0",
-    "mime": "^2.4.4"
+    "mime": "^2.4.4",
+    "open": "^6.4.0"
   }
 }

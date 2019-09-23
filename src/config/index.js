@@ -2,5 +2,6 @@ const { getIPAdress } = require('../utils')
 
 module.exports = {
   port: 2222,
-  host: getIPAdress()
+  host: getIPAdress(),
+  compressed: /^\.(css|js|html)$/
 }
