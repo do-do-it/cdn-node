@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
-/dist
+dist
+public/*
+!public/.gitkeeper
 
 # local env files
 .env.local
