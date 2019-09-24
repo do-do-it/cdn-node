@@ -7,28 +7,31 @@ const { promisify } = require('util')
 const zlib = require('zlib')
 const stat = promisify(fs.stat)
 const readdir = promisify(fs.readdir)
+const isFresh = require('./utils/cache')
 
 const template = Handlebars.compile(fs.readFileSync(join(__dirname, './layout/dir.html')).toString())
 
 module.exports = async (req, res, conf) => {
-  console.log()
-
   try {
-    const encoding = req.headers['accept-encoding'].trim().split(',')
-    console.log(encoding)
-    
     const { pathname } = parse(req.url)
     const filepath = join(__dirname, '../public', pathname)
-    const file = await stat(filepath)
-    res.setHeader('Cache-Control', 'max-age=691200')
-    if (file.isFile()) {
+    const stats = await stat(filepath)
+    
+    if (stats.isFile()) {
       // 如果是文件
       const mineType = mime.getType(extname(filepath))
       res.statusCode = 200
       res.setHeader('Content-Type', mineType)
+      if (isFresh(stats, req, res)) {
+        // 存在缓存
+        res.statusCode = 304
+        res.end()
+        return
+      }
       // 创建可读流
       const rs = fs.createReadStream(filepath)
       // 是否需要压缩
+      const encoding = req.headers['accept-encoding'].trim().split(',')
       if (conf.compressed.test(extname(filepath)) && encoding.length) {
         let compressType = ''
         let compress = null
@@ -48,7 +51,7 @@ module.exports = async (req, res, conf) => {
       } else {
         rs.pipe(res)
       }
-    } else if (file.isDirectory()) {
+    } else if (stats.isDirectory()) {
       // 如果是文件夹
       const dirs = await readdir(filepath)
       res.statusCode = 200
@@ -71,7 +74,7 @@ module.exports = async (req, res, conf) => {
     }
 
   } catch (err) {
-    console.log(err)
+    console.error(err)
     res.statusCode = 404
     res.setHeader('Content-Type', 'text/html')
     res.end('Not Found')

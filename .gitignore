@@ -3,6 +3,7 @@ node_modules
 dist
 public/*
 !public/.gitkeeper
+!public/favicon.png
 
 # local env files
 .env.local
