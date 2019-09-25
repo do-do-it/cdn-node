@@ -1,6 +1,7 @@
 const http = require('http')
 const conf = require('./config')
 const route = require('./route')
+if (process.env.name) conf.host = '127.0.0.1'
 
 const app = http.createServer((req, res) => {
   route(req, res, conf)
