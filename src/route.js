@@ -21,7 +21,7 @@ module.exports = async (req, res, conf) => {
       // 如果是文件
       const mineType = mime.getType(extname(filepath))
       res.statusCode = 200
-      res.setHeader('Content-Type', mineType)
+      res.setHeader('Content-Type', mineType + ';charset=utf-8')
       if (isFresh(stats, req, res)) {
         // 存在缓存
         res.statusCode = 304
@@ -55,7 +55,7 @@ module.exports = async (req, res, conf) => {
       // 如果是文件夹
       const dirs = await readdir(filepath)
       res.statusCode = 200
-      res.setHeader('Content-Type', 'text/html')
+      res.setHeader('Content-Type', 'text/html;charset=utf-8')
       const data = []
       dirs.forEach(file => {
         data.push({
